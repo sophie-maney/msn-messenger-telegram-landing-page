@@ -14,6 +14,9 @@ Landing page for **Messenger for Telegram**: a native macOS app (AppKit, macOS 2
 | Instruction blue | `#1F3F8F` | Headings (Win7's "main instruction" blue, a little deeper) |
 | Paper | `#FFFFFF` | Window bodies and the page below the hero |
 | Available | `#3BB54A` | Presence orb, "works" marker |
+| Grass | `#5DB82E` → `#2E7F1D` | Hero horizon, footer ground, the Download button |
+| Aurora | `#7FD3F5` | Light streaks in the sky, the wave under the hero |
+| Pearl | `#F2F8FD` | Wash at the top of the page below the hero |
 | Busy / Away / Offline | `#D8372B` / `#EF9A1A` / `#9AA6B2` | The other orbs; Offline marks "not yet" |
 
 There's no dark mode. WLM didn't have one and the app forces the light appearance, so the page commits to that.
@@ -69,3 +72,4 @@ Content is left-aligned throughout. Only the toast and the window are "objects";
 
 - No screenshots of the real app yet. If they get added, they'll show extracted WLM art, so decide on that first.
 - Pass 1 (2026-10-13), after looking at screenshots: the hero window grew to 360px with a taller list, the toast widened so "signed in." fits on one line, mobile got a lighter sky behind the headline for contrast, and inline legend orbs got spacing.
+- Pass 2 (2026-10-13), more 2007 Frutiger Aero: the hero sky got Vista-style aurora streaks, a glossy grass horizon and a few bubbles, all inline SVG. The hero now ends in a glossy Windows Live "wave" curve instead of a straight cut. Download became a glossy green button (green = Available, so it reads as *go*), the install steps became glass spheres, and the footer ends on grass. I considered and dropped glass windows around every section (card kit in Aero clothing) and a Windows taskbar (wrong OS, Microsoft's start orb).

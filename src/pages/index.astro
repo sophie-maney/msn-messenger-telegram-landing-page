@@ -14,6 +14,57 @@ const featureColumns = [features.slice(0, 3), features.slice(3)];
   description="A Mac app that brings back Messenger 2009 for your Telegram chats: a small contact list, a window per conversation, status orbs, nudges and Aero glass."
 >
   <header class="desktop">
+    <!-- Frutiger Aero scenery: aurora, a grassy horizon and a few bubbles -->
+    <svg class="scenery" viewBox="0 0 1440 720" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="aurora" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#fff" stop-opacity="0" />
+          <stop offset="0.35" stop-color="#bff0ff" stop-opacity="0.55" />
+          <stop offset="0.7" stop-color="#fff" stop-opacity="0.35" />
+          <stop offset="1" stop-color="#fff" stop-opacity="0" />
+        </linearGradient>
+        <linearGradient id="hill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#9be05a" />
+          <stop offset="0.35" stop-color="#5db82e" />
+          <stop offset="1" stop-color="#2e7f1d" />
+        </linearGradient>
+        <linearGradient id="hill-far" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#b9ec8a" />
+          <stop offset="1" stop-color="#5aa83a" />
+        </linearGradient>
+        <linearGradient id="hill-sheen" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#fff" stop-opacity="0.7" />
+          <stop offset="1" stop-color="#fff" stop-opacity="0" />
+        </linearGradient>
+        <radialGradient id="bubble" cx="0.38" cy="0.3" r="0.72">
+          <stop offset="0" stop-color="#fff" stop-opacity="0.9" />
+          <stop offset="0.25" stop-color="#fff" stop-opacity="0.18" />
+          <stop offset="0.8" stop-color="#d8f4ff" stop-opacity="0.12" />
+          <stop offset="1" stop-color="#fff" stop-opacity="0.6" />
+        </radialGradient>
+        <filter id="soft" x="-20%" y="-50%" width="140%" height="200%">
+          <feGaussianBlur stdDeviation="14" />
+        </filter>
+      </defs>
+
+      <g filter="url(#soft)">
+        <path d="M-80 330 C 260 180, 620 300, 900 200 S 1360 90, 1540 150 L1540 190 C 1300 170, 1100 300, 880 290 S 300 300, -80 400 Z" fill="url(#aurora)" />
+        <path d="M-80 470 C 300 360, 700 430, 1000 330 S 1400 260, 1540 300 L1540 320 C 1360 300, 1180 400, 980 400 S 380 450, -80 520 Z" fill="url(#aurora)" opacity="0.7" />
+      </g>
+
+      <path d="M300 720 C 560 610, 1000 560, 1440 580 L1440 720 Z" fill="url(#hill-far)" opacity="0.85" />
+      <path d="M-20 720 L-20 600 C 180 560, 420 590, 620 650 S 900 720, 960 720 Z" fill="url(#hill)" />
+      <path d="M-20 606 C 180 566, 420 596, 620 656 C 420 610, 180 590, -20 630 Z" fill="url(#hill-sheen)" opacity="0.6" />
+
+      <g fill="url(#bubble)" stroke="#fff" stroke-opacity="0.55">
+        <circle cx="1210" cy="250" r="38" />
+        <circle cx="1290" cy="330" r="17" />
+        <circle cx="1150" cy="360" r="10" />
+        <circle cx="70" cy="230" r="24" />
+        <circle cx="560" cy="120" r="12" />
+      </g>
+    </svg>
+
     <div class="desktop__inner">
       <div class="desktop__window" id="nudge-target">
         <ContactList />
@@ -26,7 +77,12 @@ const featureColumns = [features.slice(0, 3), features.slice(3)];
           status orbs, nudges and Aero glass.
         </p>
         <div class="intro__actions">
-          <a class="button button--default" href={release.dmg}>Download for Mac</a>
+          <a class="button button--go" href={release.dmg}>
+            <span class="button__orb" aria-hidden="true">
+              <svg viewBox="0 0 12 12"><path d="M4 1h4v4.5h2.5L6 10.5 1.5 5.5H4z" /></svg>
+            </span>
+            Download for Mac
+          </a>
           <button class="button" type="button" id="nudge-button">Send a nudge</button>
         </div>
         <p class="intro__nudge-status" id="nudge-status" aria-live="polite"></p>
@@ -40,6 +96,20 @@ const featureColumns = [features.slice(0, 3), features.slice(3)];
     <div class="desktop__toast">
       <SignInToast />
     </div>
+
+    <!-- The Windows Live wave: a glossy curve where the desktop meets the page -->
+    <svg class="wave" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
+      <defs>
+        <linearGradient id="wave-gloss" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#fff" stop-opacity="0.2" />
+          <stop offset="0.5" stop-color="#fff" stop-opacity="0.95" />
+          <stop offset="1" stop-color="#fff" stop-opacity="0.3" />
+        </linearGradient>
+      </defs>
+      <path d="M0 52 C 360 6, 900 6, 1440 38 L1440 80 L0 80 Z" fill="#7fd3f5" opacity="0.55" />
+      <path d="M0 62 C 400 22, 960 18, 1440 50 L1440 80 L0 80 Z" fill="var(--pearl)" />
+      <path d="M0 62 C 400 22, 960 18, 1440 50" fill="none" stroke="url(#wave-gloss)" stroke-width="2" />
+    </svg>
   </header>
 
   <main>
@@ -160,6 +230,19 @@ const featureColumns = [features.slice(0, 3), features.slice(3)];
       <span aria-hidden="true">&ensp;</span>
       Set in Selawik, under the <a href="/fonts/OFL.txt">SIL Open Font License</a>.
     </p>
+    <!-- The page ends where the desktop began: on the grass -->
+    <svg class="footer__ground" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
+      <defs>
+        <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#9be05a" />
+          <stop offset="0.4" stop-color="#5db82e" />
+          <stop offset="1" stop-color="#2e7f1d" />
+        </linearGradient>
+      </defs>
+      <path d="M0 120 L0 70 C 300 30, 640 40, 900 70 S 1260 60, 1440 40 L1440 120 Z" fill="#b9ec8a" opacity="0.8" />
+      <path d="M0 120 L0 84 C 360 50, 760 64, 1040 92 S 1340 90, 1440 74 L1440 120 Z" fill="url(#ground)" />
+      <path d="M0 84 C 360 50, 760 64, 1040 92 C 760 70, 360 62, 0 94 Z" fill="#fff" opacity="0.4" />
+    </svg>
   </footer>
 </Base>
 
@@ -168,34 +251,27 @@ const featureColumns = [features.slice(0, 3), features.slice(3)];
   .desktop {
     position: relative;
     overflow: hidden;
-    padding: clamp(32px, 7vw, 96px) var(--gutter) clamp(48px, 9vw, 120px);
+    padding: clamp(32px, 7vw, 96px) var(--gutter) clamp(96px, 12vw, 168px);
     background:
-      radial-gradient(70% 60% at 78% 30%, rgba(255, 255, 255, 0.55), transparent 70%),
-      radial-gradient(60% 50% at 10% 110%, rgba(140, 220, 120, 0.45), transparent 70%),
-      linear-gradient(165deg, #164a96 0%, var(--sky) 38%, #79b9ea 78%, #b9dcf6 100%);
+      radial-gradient(55% 50% at 74% 34%, rgba(255, 255, 255, 0.6), transparent 70%),
+      radial-gradient(40% 35% at 90% 8%, rgba(127, 211, 245, 0.5), transparent 70%),
+      linear-gradient(170deg, #0f3f8c 0%, #1f63b8 30%, #4a9ae0 62%, #a6dcf8 88%, #d7f0fc 100%);
   }
-  /* Two soft light ribbons across the sky */
-  .desktop::before,
-  .desktop::after {
-    content: '';
+  .scenery,
+  .wave {
     position: absolute;
-    left: -20%;
-    width: 140%;
-    height: 180px;
-    border-radius: 50%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35) 40%, rgba(255, 255, 255, 0.05));
-    filter: blur(18px);
-    transform: rotate(-9deg);
+    left: 0;
+    width: 100%;
     pointer-events: none;
   }
-  .desktop::before {
-    top: 38%;
+  .scenery {
+    top: 0;
+    height: 100%;
   }
-  .desktop::after {
-    top: 58%;
-    height: 90px;
-    opacity: 0.6;
-    transform: rotate(-6deg);
+  .wave {
+    bottom: -1px;
+    z-index: 1;
+    height: clamp(40px, 6vw, 80px);
   }
 
   .desktop__inner {
@@ -259,7 +335,7 @@ const featureColumns = [features.slice(0, 3), features.slice(3)];
     position: absolute;
     z-index: 2;
     right: 20px;
-    bottom: 20px;
+    bottom: clamp(48px, 6vw, 84px);
   }
 
   /* WLM's nudge: about a second of jitter */
@@ -307,11 +383,16 @@ const featureColumns = [features.slice(0, 3), features.slice(3)];
 
   @media (max-width: 760px) {
     .desktop {
-      padding-bottom: 170px;
+      padding-bottom: 200px;
       background:
         radial-gradient(120% 45% at 30% 14%, rgba(255, 255, 255, 0.6), transparent 75%),
-        radial-gradient(60% 50% at 10% 110%, rgba(140, 220, 120, 0.45), transparent 70%),
         linear-gradient(170deg, #3f86d2 0%, #6aaee6 45%, var(--sky) 75%, #79b9ea 100%);
+    }
+    /* Keep the horizon at desktop scale instead of stretching it up the tall hero */
+    .scenery {
+      top: auto;
+      bottom: 0;
+      height: 520px;
     }
     .desktop__inner {
       grid-template-columns: minmax(0, 1fr);
@@ -448,11 +529,16 @@ const featureColumns = [features.slice(0, 3), features.slice(3)];
     place-items: center;
     width: 34px;
     height: 34px;
-    border: 1px solid #3c7fb1;
+    border: 1px solid #2a6aa8;
     border-radius: 50%;
-    background: linear-gradient(#f0f8fd, #b3dcf5);
-    color: var(--instruction);
+    /* A glass sphere: highlight on top, light pooling at the bottom */
+    background:
+      radial-gradient(58% 36% at 50% 14%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0) 100%),
+      radial-gradient(circle at 50% 90%, #8fdcff, #2a74c4 62%, #1d559c);
+    box-shadow: 0 2px 4px rgba(20, 60, 110, 0.3);
+    color: #fff;
     font-weight: 600;
+    text-shadow: 0 1px 1px rgba(10, 40, 90, 0.75);
   }
   .steps h3 {
     color: #1e395b;
@@ -464,14 +550,21 @@ const featureColumns = [features.slice(0, 3), features.slice(3)];
   }
 
   .footer {
+    position: relative;
     display: grid;
     gap: 8px;
-    max-width: 1120px;
-    margin: clamp(72px, 10vw, 120px) auto 0;
-    padding: 28px var(--gutter) 40px;
-    border-top: 1px solid var(--rule);
-    color: var(--ink-quiet);
+    margin-top: clamp(72px, 10vw, 120px);
+    padding: 56px max(var(--gutter), calc((100% - 1120px) / 2 + var(--gutter))) clamp(96px, 10vw, 140px);
+    background: linear-gradient(transparent, #d4eefb);
+    color: #46505d;
     font-size: var(--t-15);
+  }
+  .footer__ground {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: clamp(56px, 7vw, 100px);
   }
   .footer p {
     max-width: var(--measure);
