@@ -1,0 +1,72 @@
+---
+import DisplayPicture from './DisplayPicture.astro';
+---
+
+<div class="toast glass" id="sign-in-toast" role="status" aria-live="polite" hidden>
+  <div class="toast__titlebar">
+    <span class="glass__title">Messenger</span>
+    <button class="toast__close" id="toast-close" aria-label="Close alert">
+      <svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2 2l6 6M8 2l-6 6" /></svg>
+    </button>
+  </div>
+  <div class="toast__body">
+    <DisplayPicture picture="bubbles" size={48} />
+    <p><strong>Priya</strong> has just signed in.</p>
+  </div>
+</div>
+
+<style>
+  .toast {
+    width: 272px;
+    padding: 0 5px 5px;
+  }
+  .toast[hidden] {
+    display: none;
+  }
+  .toast__titlebar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 24px;
+    padding-left: 4px;
+    font-size: var(--t-13);
+  }
+  .toast__close {
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 18px;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    background: none;
+    cursor: pointer;
+  }
+  .toast__close:hover {
+    border-color: rgba(20, 45, 90, 0.5);
+    background: linear-gradient(#e9a99c, #c2412c);
+  }
+  .toast__close svg {
+    width: 9px;
+    height: 9px;
+    stroke: #1b2a40;
+    stroke-width: 1.6;
+  }
+  .toast__close:hover svg {
+    stroke: #fff;
+  }
+  .toast__body {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 74px;
+    padding: 10px 12px;
+    border: 1px solid rgba(20, 45, 90, 0.5);
+    background: linear-gradient(#fff 40%, #dcebf9);
+    font-size: var(--t-15);
+    line-height: 1.35;
+  }
+  .toast__body strong {
+    font-weight: 600;
+  }
+</style>

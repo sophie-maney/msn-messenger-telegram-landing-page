@@ -1,0 +1,436 @@
+---
+import DisplayPicture from './DisplayPicture.astro';
+
+type Status = 'available' | 'busy' | 'away' | 'offline';
+type Contact = { name: string; status: Status; message?: string; playing?: boolean };
+
+const groups: { name: string; open: boolean; contacts: Contact[] }[] = [
+  {
+    name: 'Favorites',
+    open: true,
+    contacts: [
+      { name: 'Mum', status: 'available', message: 'ring me when you land' },
+      { name: 'Jess', status: 'away', message: 'at the dentist, back at 3' },
+      { name: 'Daan', status: 'offline' },
+    ],
+  },
+  {
+    name: 'Available',
+    open: true,
+    contacts: [
+      { name: 'Priya', status: 'available', message: 'Viva la Vida - Coldplay', playing: true },
+      { name: 'Tom', status: 'busy', message: "revising, don't nudge me" },
+      { name: 'Kai', status: 'available', message: 'brb' },
+      { name: 'Noor', status: 'away' },
+    ],
+  },
+  {
+    name: 'Groups',
+    open: true,
+    contacts: [
+      { name: 'Class of 2009 reunion', status: 'available' },
+      { name: 'Climbing on Thursdays', status: 'available' },
+    ],
+  },
+  {
+    name: 'Offline',
+    open: false,
+    contacts: [
+      { name: 'Alex', status: 'offline' },
+      { name: 'Bea', status: 'offline' },
+      { name: 'Chris', status: 'offline' },
+      { name: 'Femke', status: 'offline' },
+    ],
+  },
+];
+
+const label = (g: (typeof groups)[number]) =>
+  g.name === 'Offline'
+    ? `${g.name} (${g.contacts.length})`
+    : `${g.name} (${g.contacts.filter((c) => c.status !== 'offline').length}/${g.contacts.length})`;
+
+const statuses: [Status, string][] = [
+  ['available', 'Available'],
+  ['busy', 'Busy'],
+  ['away', 'Away'],
+];
+---
+
+<div class="cl glass" id="contact-list" role="region" aria-label="Messenger contact list, a working demo">
+  <div class="cl__titlebar">
+    <span class="glass__title">Messenger</span>
+    <span class="caption" aria-hidden="true">
+      <span class="caption__btn caption__btn--min"></span>
+      <span class="caption__btn caption__btn--max"></span>
+      <span class="caption__btn caption__btn--close"></span>
+    </span>
+  </div>
+
+  <div class="cl__body">
+    <div class="cl__header">
+      <DisplayPicture picture="meadow" size={68} id="my-picture" />
+      <div class="cl__me">
+        <div class="status">
+          <button class="status__button" id="status-button" aria-haspopup="menu" aria-expanded="false" aria-controls="status-menu">
+            <span class="status__name">Robin</span>
+            <span id="status-label">(Available)</span>
+            <svg class="status__caret" viewBox="0 0 8 5" aria-hidden="true"><path d="M0 0h8L4 5z" /></svg>
+          </button>
+          <ul class="menu" id="status-menu" role="menu" aria-label="Change your status" hidden>
+            {
+              statuses.map(([value, text]) => (
+                <li role="none">
+                  <button role="menuitemradio" aria-checked={value === 'available' ? 'true' : 'false'} data-status={value}>
+                    <span class:list={['orb', `orb--${value}`]} />
+                    {text}
+                  </button>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+        <input class="cl__pm" type="text" maxlength="60" placeholder="<Share a quick message>" aria-label="Personal message" />
+      </div>
+    </div>
+
+    <div class="search">
+      <input type="search" id="contact-search" placeholder="Search contacts..." aria-label="Search contacts" autocomplete="off" />
+      <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="6.5" cy="6.5" r="4.5" /><path d="M10 10l4 4" /></svg>
+    </div>
+
+    <div class="groups" id="contact-groups">
+      {
+        groups.map((g) => (
+          <details class="group" open={g.open}>
+            <summary>
+              <svg class="tree-arrow" viewBox="0 0 10 10" aria-hidden="true">
+                <path class="tree-arrow__closed" d="M3 1.5l4 3.5-4 3.5z" />
+                <path class="tree-arrow__open" d="M8 2.5v5.5H2.5z" />
+              </svg>
+              {label(g)}
+            </summary>
+            <ul>
+              {g.contacts.map((c) => (
+                <li class="contact" data-name={c.name.toLowerCase()}>
+                  <span class:list={['orb', `orb--${c.status}`]} />
+                  <span class="contact__name">{c.name}</span>
+                  {c.message && (
+                    <span class="contact__pm">
+                      {c.playing && <span aria-label="Listening to">♫ </span>}
+                      {c.message}
+                    </span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </details>
+        ))
+      }
+      <p class="groups__empty" id="search-empty" hidden>No contacts match. Clear the search to see everyone again.</p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .cl {
+    width: 100%;
+    max-width: 360px;
+    padding: 0 7px 7px;
+  }
+
+  .cl__titlebar {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    height: 30px;
+    padding-left: 6px;
+    font-size: var(--t-15);
+  }
+  .cl__titlebar .glass__title {
+    padding-top: 5px;
+  }
+
+  /* Win7 caption buttons: joined, hanging from the top edge */
+  .caption {
+    display: flex;
+    margin-top: -1px;
+  }
+  .caption__btn {
+    position: relative;
+    width: 27px;
+    height: 20px;
+    border: 1px solid rgba(20, 45, 90, 0.65);
+    border-left-width: 0;
+    background: linear-gradient(rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.15) 50%, rgba(160, 195, 235, 0.35) 51%);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+  }
+  .caption__btn--min {
+    border-left-width: 1px;
+    border-bottom-left-radius: 5px;
+  }
+  .caption__btn--close {
+    width: 46px;
+    border-bottom-right-radius: 5px;
+    background: linear-gradient(#e9a99c, #d1745e 50%, #c2412c 51%, #d5684a);
+  }
+  .caption__btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    background: #fff;
+    filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.8));
+  }
+  .caption__btn--min::after {
+    width: 9px;
+    height: 3px;
+    margin-bottom: 5px;
+  }
+  .caption__btn--max::after {
+    width: 9px;
+    height: 7px;
+    background: transparent;
+    border: 1px solid #fff;
+    border-top-width: 2px;
+  }
+  .caption__btn--close::after {
+    width: 12px;
+    height: 10px;
+    clip-path: polygon(
+      0 0, 22% 0, 50% 35%, 78% 0, 100% 0, 64% 50%, 100% 100%, 78% 100%, 50% 65%, 22% 100%, 0 100%, 36% 50%
+    );
+  }
+
+  .cl__body {
+    border: 1px solid rgba(20, 45, 90, 0.55);
+    background: var(--paper);
+    font-size: var(--t-15);
+    line-height: 1.4;
+  }
+
+  /* The default scene: a pale sky band behind your picture and name */
+  .cl__header {
+    display: flex;
+    gap: 12px;
+    padding: 14px 12px 12px;
+    background:
+      radial-gradient(90% 120% at 100% 0%, rgba(255, 255, 255, 0.9), transparent 60%),
+      linear-gradient(#bcdaf5, #e4f0fb 70%, var(--paper));
+  }
+  .cl__me {
+    min-width: 0;
+    flex: 1;
+    padding-top: 6px;
+  }
+
+  .status {
+    position: relative;
+  }
+  .status__button {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    max-width: 100%;
+    margin-left: -4px;
+    padding: 1px 4px;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    background: none;
+    color: var(--ink);
+    font: inherit;
+    font-size: var(--t-17);
+    cursor: pointer;
+  }
+  .status__button:hover,
+  .status__button[aria-expanded='true'] {
+    border-color: rgba(60, 127, 177, 0.6);
+    background: rgba(255, 255, 255, 0.6);
+  }
+  .status__name {
+    font-weight: 600;
+  }
+  .status__caret {
+    width: 8px;
+    height: 5px;
+    fill: currentColor;
+  }
+
+  /* Win7 popup menu */
+  .menu {
+    position: absolute;
+    z-index: 5;
+    top: calc(100% + 2px);
+    left: -4px;
+    min-width: 150px;
+    padding: 2px;
+    border: 1px solid #979797;
+    background: linear-gradient(90deg, #f1f1f1 28px, #e2e3e3 28px, #e2e3e3 29px, #fff 29px, #f5f5f5);
+    box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.35);
+    list-style: none;
+  }
+  .menu button {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    padding: 4px 20px 4px 7px;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    background: none;
+    color: #000;
+    font: inherit;
+    text-align: left;
+    cursor: default;
+  }
+  .menu button:hover,
+  .menu button:focus-visible {
+    outline: none;
+    border-color: #aecff7;
+    background: linear-gradient(rgba(234, 242, 252, 0.9), rgba(214, 230, 250, 0.9));
+  }
+  .menu button[aria-checked='true'] {
+    font-weight: 600;
+  }
+
+  .cl__pm {
+    width: 100%;
+    margin-top: 2px;
+    padding: 1px 0;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    background: none;
+    color: var(--ink);
+    font: inherit;
+    text-overflow: ellipsis;
+  }
+  .cl__pm::placeholder {
+    color: #5f6b7a;
+  }
+  .cl__pm:hover {
+    border-color: #b5cfe8;
+  }
+  .cl__pm:focus {
+    outline: none;
+    border-color: #569de5;
+    background: var(--paper);
+  }
+
+  .search {
+    position: relative;
+    margin: 0 10px 6px;
+  }
+  .search input {
+    width: 100%;
+    height: 26px;
+    padding: 0 28px 0 8px;
+    border: 1px solid #abadb3;
+    border-top-color: #8e9197;
+    border-radius: 3px;
+    background: var(--paper);
+    color: var(--ink);
+    font: inherit;
+    font-size: var(--t-15);
+  }
+  .search input:hover {
+    border-color: #5794bf;
+  }
+  .search input:focus {
+    outline: none;
+    border-color: #3d7bad;
+    box-shadow: 0 0 0 2px rgba(86, 157, 229, 0.25);
+  }
+  .search input::-webkit-search-cancel-button {
+    display: none;
+  }
+  .search svg {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    width: 14px;
+    height: 14px;
+    fill: none;
+    stroke: #4d6b8a;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    pointer-events: none;
+  }
+
+  .groups {
+    height: 400px;
+    overflow: auto;
+    padding: 2px 0 10px;
+  }
+  .group summary {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    color: #1e395b;
+    font-weight: 600;
+    list-style: none;
+    cursor: default;
+    user-select: none;
+  }
+  .group summary::-webkit-details-marker {
+    display: none;
+  }
+  .group summary:hover {
+    background: linear-gradient(rgba(234, 242, 252, 0.9), rgba(214, 230, 250, 0.7));
+  }
+  .tree-arrow {
+    width: 10px;
+    height: 10px;
+  }
+  .tree-arrow__closed {
+    fill: none;
+    stroke: #8c8c8c;
+  }
+  .tree-arrow__open {
+    display: none;
+    fill: #595959;
+  }
+  .group[open] .tree-arrow__closed {
+    display: none;
+  }
+  .group[open] .tree-arrow__open {
+    display: block;
+  }
+  .group ul {
+    padding: 0 0 4px;
+    list-style: none;
+  }
+
+  .contact {
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+    margin: 0 6px;
+    padding: 2px 6px 2px 18px;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  .contact[hidden] {
+    display: none;
+  }
+  .contact:hover {
+    border-color: #b8d6fb;
+    background: linear-gradient(#f8fbfe, #e3eefb);
+  }
+  .contact .orb {
+    align-self: center;
+  }
+  .contact__pm {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #6a7380;
+  }
+  .contact__pm::before {
+    content: '- ';
+  }
+
+  .groups__empty {
+    padding: 8px 12px;
+    color: var(--ink-quiet);
+  }
+</style>
