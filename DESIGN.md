@@ -1,6 +1,6 @@
 # Design plan
 
-Landing page for **Windows Live Messenger for Telegram**: a native macOS app (AppKit, macOS 26+, Apple Silicon) that turns Telegram into Windows Live Messenger 2009.
+Landing page for **Messenger for Telegram**: a native macOS app (AppKit, macOS 26+, Apple Silicon) that turns Telegram into Messenger 2009.
 
 - **Audience:** people who grew up on MSN/WLM and now live in Telegram, on a Mac.
 - **Primary job:** get them to download the latest release, and tell them honestly what works yet and how to open an unnotarized app.
@@ -31,14 +31,14 @@ The type scale is Bringhurst's classic one: 13, 15, 17, 21, 28, 40, 56, 72 px. B
 
 ```
 ┌──────────────────── desktop (full-bleed Aero sky) ────────────────────┐
-│  ┌ Windows Live Messenger ─□×┐                                         │
+│  ┌ Messenger ──────────────□×┐                                         │
 │  │ [frame] Robin (Available)▾│    Your Telegram chats,                 │
-│  │ <Share a quick message>   │    in Windows Live Messenger.           │
+│  │ <Share a quick message>   │    in Messenger.                        │
 │  │ [Search contacts      ]   │    lede…                                │
 │  │ ▾ Favorites (2/3)         │    [Download for Mac] [Send a nudge]    │
 │  │   ● Mum                   │    Version 0.9, macOS 26, Apple Silicon │
-│  │ ▾ Available (4/9)  …      │                       ┌──────────────┐ │
-│  └───────────────────────────┘                       │ toast: X has │ │
+│  │ ▾ Available (4/9)  …      │                       ┌──────────────┐  │
+│  └───────────────────────────┘                       │ toast: X has │  │
 │                                                      │ just signed in│ │
 └──────────────────────────────────────────────────────└──────────────┘─┘
   What works today: README checklist rendered as contact-list groups

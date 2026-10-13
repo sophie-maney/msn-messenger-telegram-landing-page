@@ -1,4 +1,4 @@
-# Windows Live Messenger for Telegram: landing page
+# Messenger for Telegram: landing page
 
 Astro site for the [WLM 2009-style Telegram client](https://github.com/sophie-maney/msn-messenger-telegram-releases).
 
