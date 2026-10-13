@@ -5,6 +5,8 @@ import SignInToast from '../components/SignInToast.astro';
 import { release, features } from '../site';
 
 const done = (items: [string, boolean][]) => items.filter(([, d]) => d).length;
+// Fixed columns, so collapsing a group never reflows groups into the other column
+const featureColumns = [features.slice(0, 3), features.slice(3)];
 ---
 
 <Base
@@ -50,30 +52,32 @@ const done = (items: [string, boolean][]) => items.filter(([, d]) => d).length;
       </p>
 
       <div class="features">
-        {
-          features.map((g) => (
-            <details class="feature-group" open>
-              <summary>
-                <svg class="tree-arrow" viewBox="0 0 10 10" aria-hidden="true">
-                  <path class="tree-arrow__closed" d="M3 1.5l4 3.5-4 3.5z" />
-                  <path class="tree-arrow__open" d="M8 2.5v5.5H2.5z" />
-                </svg>
-                {g.group} ({done(g.items)}/{g.items.length})
-              </summary>
-              <ul>
-                {g.items.map(([label, isDone]) => (
-                  <li class:list={{ 'is-missing': !isDone }}>
-                    <span class:list={['orb', { 'orb--offline': !isDone }]} />
-                    <span>
-                      {label}
-                      {!isDone && <span class="visually-hidden"> (not yet)</span>}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </details>
-          ))
-        }
+        {featureColumns.map((column) => (
+          <div class="features__column">
+            {column.map((g) => (
+              <details class="feature-group" open>
+                <summary>
+                  <svg class="tree-arrow" viewBox="0 0 10 10" aria-hidden="true">
+                    <path class="tree-arrow__closed" d="M3 1.5l4 3.5-4 3.5z" />
+                    <path class="tree-arrow__open" d="M8 2.5v5.5H2.5z" />
+                  </svg>
+                  {g.group} ({done(g.items)}/{g.items.length})
+                </summary>
+                <ul>
+                  {g.items.map(([label, isDone]) => (
+                    <li class:list={{ 'is-missing': !isDone }}>
+                      <span class:list={['orb', { 'orb--offline': !isDone }]} />
+                      <span>
+                        {label}
+                        {!isDone && <span class="visually-hidden"> (not yet)</span>}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </details>
+            ))}
+          </div>
+        ))}
       </div>
     </section>
 
@@ -347,12 +351,13 @@ const done = (items: [string, boolean][]) => items.filter(([, d]) => d).length;
   }
 
   .features {
-    columns: 2 400px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
+    align-items: start;
     column-gap: 56px;
     margin-top: 32px;
   }
   .feature-group {
-    break-inside: avoid;
     margin-bottom: 24px;
   }
   .feature-group summary {
